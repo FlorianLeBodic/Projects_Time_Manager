@@ -7,6 +7,7 @@ use App\Repository\ProjectRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints\Length;
 
 //Test pour github
 
@@ -20,6 +21,7 @@ class Project
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Length(min:4)]
     private ?string $name = null;
 
     #[ORM\Column(nullable: true)]

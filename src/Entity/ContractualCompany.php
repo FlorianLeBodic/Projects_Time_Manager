@@ -7,23 +7,30 @@ use App\Repository\ContractualCompanyRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints\Length;
 
-#[ApiResource]
+#[ApiResource(
+    normalizationContext: ['groups' => ['read:collection']]
+)]
 #[ORM\Entity(repositoryClass: ContractualCompanyRepository::class)]
 class ContractualCompany
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['read:collection'])]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[Groups(['read:collection'])]
+    #[ORM\Column(length: 50)]
+    #[Length(min:3)]
     private ?string $name = null;
 
     #[ORM\OneToMany(mappedBy: 'contractualCompany', targetEntity: Project::class)]
     private Collection $projects;
 
-    #[ORM\OneToMany(mappedBy: 'contractualCompany', targetEntity: Coworker::class)]
+    #[ORM\OneToMany(mappedBy: 'contractualCompany', targetEntity: Coworker::class, cascade:["persist"])]
     private Collection $coworkers;
 
     public function __construct()

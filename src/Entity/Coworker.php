@@ -7,6 +7,7 @@ use App\Repository\CoworkerRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints\Length;
 
 #[ApiResource]
 #[ORM\Entity(repositoryClass: CoworkerRepository::class)]
@@ -18,9 +19,11 @@ class Coworker
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
+    #[Length(min:2)]
     private ?string $first_name = null;
 
     #[ORM\Column(length: 50)]
+    #[Length(min:2)]
     private ?string $last_name = null;
 
     #[ORM\ManyToMany(targetEntity: Project::class, inversedBy: 'coworkers')]

@@ -42,7 +42,7 @@ class HoursOnTheRoad
 
     public function setStartedAt(\DateTimeInterface $startedAt): self
     {
-        $this->startedAt = $startedAt;
+        $this->startedAt = new \DateTime();
 
         return $this;
     }
