@@ -6,6 +6,8 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\ProjectRepository;
 use Doctrine\ORM\Mapping as ORM;
 
+//Test pour github
+
 #[ApiResource]
 #[ORM\Entity(repositoryClass: ProjectRepository::class)]
 class Project
