@@ -23,6 +23,9 @@ class Project
     #[ORM\Column(nullable: true)]
     private ?int $sold_hours = null;
 
+    #[ORM\ManyToOne(inversedBy: 'projects')]
+    private ?ContractualCompany $contractualCompany = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -48,6 +51,18 @@ class Project
     public function setSoldHours(?int $sold_hours): self
     {
         $this->sold_hours = $sold_hours;
+
+        return $this;
+    }
+
+    public function getContractualCompany(): ?ContractualCompany
+    {
+        return $this->contractualCompany;
+    }
+
+    public function setContractualCompany(?ContractualCompany $contractualCompany): self
+    {
+        $this->contractualCompany = $contractualCompany;
 
         return $this;
     }
