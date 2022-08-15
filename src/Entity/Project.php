@@ -31,9 +31,17 @@ class Project
     #[ORM\ManyToMany(targetEntity: Coworker::class, mappedBy: 'projects')]
     private Collection $coworkers;
 
+    #[ORM\OneToMany(mappedBy: 'project', targetEntity: HoursOnTheRoad::class)]
+    private Collection $hoursOnTheRoads;
+
+    #[ORM\OneToMany(mappedBy: 'project', targetEntity: HoursToCustomerCompany::class)]
+    private Collection $hoursToCustomerCompany;
+
     public function __construct()
     {
         $this->coworkers = new ArrayCollection();
+        $this->hoursOnTheRoads = new ArrayCollection();
+        $this->hoursToCustomerCompany = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -99,6 +107,66 @@ class Project
     {
         if ($this->coworkers->removeElement($coworker)) {
             $coworker->removeProject($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, HoursOnTheRoad>
+     */
+    public function getHoursOnTheRoads(): Collection
+    {
+        return $this->hoursOnTheRoads;
+    }
+
+    public function addHoursOnTheRoad(HoursOnTheRoad $hoursOnTheRoad): self
+    {
+        if (!$this->hoursOnTheRoads->contains($hoursOnTheRoad)) {
+            $this->hoursOnTheRoads->add($hoursOnTheRoad);
+            $hoursOnTheRoad->setProject($this);
+        }
+
+        return $this;
+    }
+
+    public function removeHoursOnTheRoad(HoursOnTheRoad $hoursOnTheRoad): self
+    {
+        if ($this->hoursOnTheRoads->removeElement($hoursOnTheRoad)) {
+            // set the owning side to null (unless already changed)
+            if ($hoursOnTheRoad->getProject() === $this) {
+                $hoursOnTheRoad->setProject(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, HoursToCustomerCompany>
+     */
+    public function getHoursToCustomerCompany(): Collection
+    {
+        return $this->hoursToCustomerCompany;
+    }
+
+    public function addHoursToCustomerCompany(HoursToCustomerCompany $hoursToCustomerCompany): self
+    {
+        if (!$this->hoursToCustomerCompany->contains($hoursToCustomerCompany)) {
+            $this->hoursToCustomerCompany->add($hoursToCustomerCompany);
+            $hoursToCustomerCompany->setProject($this);
+        }
+
+        return $this;
+    }
+
+    public function removeHoursToCustomerCompany(HoursToCustomerCompany $hoursToCustomerCompany): self
+    {
+        if ($this->hoursToCustomerCompany->removeElement($hoursToCustomerCompany)) {
+            // set the owning side to null (unless already changed)
+            if ($hoursToCustomerCompany->getProject() === $this) {
+                $hoursToCustomerCompany->setProject(null);
+            }
         }
 
         return $this;

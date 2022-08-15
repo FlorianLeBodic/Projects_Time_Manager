@@ -23,9 +23,13 @@ class ContractualCompany
     #[ORM\OneToMany(mappedBy: 'contractualCompany', targetEntity: Project::class)]
     private Collection $projects;
 
+    #[ORM\OneToMany(mappedBy: 'contractualCompany', targetEntity: Coworker::class)]
+    private Collection $coworkers;
+
     public function __construct()
     {
         $this->projects = new ArrayCollection();
+        $this->coworkers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -69,6 +73,36 @@ class ContractualCompany
             // set the owning side to null (unless already changed)
             if ($project->getContractualCompany() === $this) {
                 $project->setContractualCompany(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Coworker>
+     */
+    public function getCoworkers(): Collection
+    {
+        return $this->coworkers;
+    }
+
+    public function addCoworker(Coworker $coworker): self
+    {
+        if (!$this->coworkers->contains($coworker)) {
+            $this->coworkers->add($coworker);
+            $coworker->setContractualCompany($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCoworker(Coworker $coworker): self
+    {
+        if ($this->coworkers->removeElement($coworker)) {
+            // set the owning side to null (unless already changed)
+            if ($coworker->getContractualCompany() === $this) {
+                $coworker->setContractualCompany(null);
             }
         }
 
