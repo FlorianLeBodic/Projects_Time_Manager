@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\ProjectRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 //Test pour github
@@ -25,6 +27,14 @@ class Project
 
     #[ORM\ManyToOne(inversedBy: 'projects')]
     private ?ContractualCompany $contractualCompany = null;
+
+    #[ORM\ManyToMany(targetEntity: Coworker::class, mappedBy: 'projects')]
+    private Collection $coworkers;
+
+    public function __construct()
+    {
+        $this->coworkers = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -63,6 +73,33 @@ class Project
     public function setContractualCompany(?ContractualCompany $contractualCompany): self
     {
         $this->contractualCompany = $contractualCompany;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Coworker>
+     */
+    public function getCoworkers(): Collection
+    {
+        return $this->coworkers;
+    }
+
+    public function addCoworker(Coworker $coworker): self
+    {
+        if (!$this->coworkers->contains($coworker)) {
+            $this->coworkers->add($coworker);
+            $coworker->addProject($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCoworker(Coworker $coworker): self
+    {
+        if ($this->coworkers->removeElement($coworker)) {
+            $coworker->removeProject($this);
+        }
 
         return $this;
     }
