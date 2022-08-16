@@ -20,7 +20,10 @@ use Symfony\Component\Serializer\Annotation\Groups;
             'path' => '/me',
             'method' => 'get',
             'controller' => MeController::class,
-            'read' => false
+            'read' => false,
+            'openapi_context' => [
+                'security' =>['cookieAuth'=> ['']]
+            ],
         ]
     ],
     itemOperations: [
@@ -31,22 +34,24 @@ use Symfony\Component\Serializer\Annotation\Groups;
             'output' => false
         ]
     ],
-    normalizationContext: ['groups' => ['read:User']]
+    //Permet de limiter les opérations et de cacher /api/users/{id}
+    normalizationContext: ['groups' => ['read:User']],
+    security: 'is_granted("ROLE_USER")'
 )]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
+    #[Groups(['read:User'])]
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['read:User'])]
     private ?int $id = null;
 
-    #[ORM\Column(length: 180, unique: true)]
     #[Groups(['read:User'])]
+    #[ORM\Column(length: 180, unique: true)]
     private ?string $email = null;
 
-    #[ORM\Column]
     #[Groups(['read:User'])]
+    #[ORM\Column]
     private array $roles = [];
 
     /**

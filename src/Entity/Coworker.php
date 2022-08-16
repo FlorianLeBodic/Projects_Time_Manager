@@ -9,7 +9,9 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints\Length;
 
-#[ApiResource]
+#[ApiResource(
+    security: 'is_granted("ROLE_USER")'
+)]
 #[ORM\Entity(repositoryClass: CoworkerRepository::class)]
 class Coworker
 {

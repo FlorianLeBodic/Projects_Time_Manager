@@ -10,8 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints\Length;
 
-#[ApiResource(
-    normalizationContext: ['groups' => ['read:collection']]
+#[ApiResource(normalizationContext: ['groups' => ['read:collection']],
+    security: 'is_granted("ROLE_USER")'
 )]
 #[ORM\Entity(repositoryClass: ContractualCompanyRepository::class)]
 class ContractualCompany

@@ -7,7 +7,9 @@ use App\Repository\HoursToCustomerCompanyRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ApiResource]
+#[ApiResource(
+    security: 'is_granted("ROLE_USER")'
+)]
 #[ORM\Entity(repositoryClass: HoursToCustomerCompanyRepository::class)]
 class HoursToCustomerCompany
 {
