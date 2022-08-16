@@ -27,6 +27,8 @@ class OpenApiFactory implements OpenApiFactoryInterface
             }
         }
 
+//  Permet de l'utiliser juste pour l'utilisateur
+
 //        $schema = $openApi->getComponents()->getSecuritySchemes();
 //        $schema['cookieAuth'] = new \ArrayObject([
 //            'type' =>'apiKey',
@@ -80,6 +82,7 @@ class OpenApiFactory implements OpenApiFactoryInterface
 
 //        $openApi->getPaths()->addPath('/api/login', $pathItem);
 
+        //permet de verouiller toutes les méthodes si utilisateur anonyme
       $openApi = $openApi->withSecurity(['cookieAuth' => ['']]);
 
         return $openApi;
