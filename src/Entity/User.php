@@ -11,6 +11,8 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 
+
+#[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ApiResource(
     collectionOperations: [
         'me' => [
@@ -24,14 +26,13 @@ use Symfony\Component\Serializer\Annotation\Groups;
     itemOperations: [
         'get' => [
             'controller' => NotFoundAction::class,
-            'openapi_context' => ['summary' => 'hidden'],
+            'openapi_context'=> ['summary' => 'hidden'],
             'read' => false,
             'output' => false
         ]
     ],
     normalizationContext: ['groups' => ['read:User']]
 )]
-#[ORM\Entity(repositoryClass: UserRepository::class)]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
